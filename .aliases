@@ -1,0 +1,110 @@
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias grep='grep --color=auto'
+alias mkdir='mkdir -p'
+
+# Безопасные rm/cp/mv
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Git aliases, если не хочешь помнить OMZ-сокращения
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+
+# Docker aliases
+alias d='docker'
+alias dc='docker compose'
+
+mcd() {
+    mkdir -p -- "$1" && cd -- "$1"
+}
+
+# Backup file or directory with timestamp
+bk() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: bak <file-or-directory> [...]"
+    return 1
+  fi
+
+  local item
+  local timestamp
+  timestamp=$(date +%Y%m%d-%H%M%S)
+
+  for item in "$@"; do
+    if [[ ! -e "$item" ]]; then
+      echo "Not found: $item"
+      continue
+    fi
+
+    cp -a -- "$item" "${item}.bak.${timestamp}"
+    echo "Backup created: ${item}.bak.${timestamp}"
+  done
+}
+
+# Backup system file with sudo
+sbk() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: sbak <file-or-directory> [...]"
+    return 1
+  fi
+
+  local item
+  local timestamp
+  timestamp=$(date +%Y%m%d-%H%M%S)
+
+  for item in "$@"; do
+    if [[ ! -e "$item" ]]; then
+      echo "Not found: $item"
+      continue
+    fi
+
+    sudo cp -a -- "$item" "${item}.bak.${timestamp}"
+    echo "Backup created: ${item}.bak.${timestamp}"
+  done
+}
+
+bn() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: bnano <file>"
+    return 1
+  fi
+
+  local file="$1"
+  local timestamp
+  timestamp=$(date +%Y%m%d-%H%M%S)
+
+  if [[ -e "$file" ]]; then
+    cp -a -- "$file" "${file}.bak.${timestamp}"
+    echo "Backup created: ${file}.bak.${timestamp}"
+  fi
+
+  nano "$file"
+}
+
+sbn() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: bsudoedit <file>"
+    return 1
+  fi
+
+  local file="$1"
+  local timestamp
+  timestamp=$(date +%Y%m%d-%H%M%S)
+
+  if [[ -e "$file" ]]; then
+    sudo cp -a -- "$file" "${file}.bak.${timestamp}"
+    echo "Backup created: ${file}.bak.${timestamp}"
+  fi
+
+  EDITOR=nano sudoedit "$file"
+}

@@ -1,0 +1,4 @@
+cf() {
+    [[ -f "$1" ]] || { echo "file not found: $1" >&2; return 1; }
+    clip.exe < "$1"
+}
