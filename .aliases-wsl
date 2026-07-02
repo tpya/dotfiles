@@ -6,23 +6,35 @@ cf() {
 cliptofile() {
     local file="$1"
 
+    if [[ -z "$file" ]]; then
+        echo "Usage: cliptofile <file>" >&2
+        return 1
+    fi
+
     powershell.exe -NoProfile -Command \
         "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard -Raw" \
         | sed 's/\r$//' > "$file"
 
-    echo "Записано в файл: $file"
-    echo "Содержимое файла:"
+    # echo "Written to file: $file"
+    echo "----- BEGIN FILE: $file -----"
     cat "$file"
+    echo "----- END FILE: $file -----"
 }
 
 clipappend() {
     local file="$1"
 
+    if [[ -z "$file" ]]; then
+        echo "Usage: clipappend <file>" >&2
+        return 1
+    fi
+
     powershell.exe -NoProfile -Command \
         "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard -Raw" \
         | sed 's/\r$//' >> "$file"
 
-    echo "Добавлено в файл: $file"
-    echo "Текущее содержимое файла:"
+    # echo "Appended to file: $file"
+    echo "----- BEGIN FILE: $file -----"
     cat "$file"
+    echo "----- END FILE: $file -----"
 }
