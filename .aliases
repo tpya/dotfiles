@@ -109,3 +109,24 @@ sbn() {
 
   EDITOR=nano sudoedit "$file"
 }
+
+# Самые большие файлы в директории
+bigfiles() {
+    local dir="${1:-.}"
+    local n="${2:-20}"
+
+    find "$dir" -xdev -type f -printf '%s\t%p\n' 2>/dev/null \
+        | sort -nr \
+        | head -n "$n" \
+        | numfmt --field=1 --to=iec --suffix=B
+}
+
+# Самые большие директории/файлы на первом уровне
+bigdirs() {
+    local dir="${1:-.}"
+    local n="${2:-20}"
+
+    du -xh --max-depth=1 "$dir" 2>/dev/null \
+        | sort -hr \
+        | head -n "$n"
+}
