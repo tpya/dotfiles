@@ -6,6 +6,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias grep='grep --color=auto'
 alias mkdir='mkdir -p'
+alias cls='clear'
 
 # Безопасные rm/cp/mv
 alias rm='rm -i'
