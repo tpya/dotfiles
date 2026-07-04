@@ -131,3 +131,7 @@ bigdirs() {
         | sort -hr \
         | head -n "$n"
 }
+
+clean_identifiers() {
+    find "${1:-.}" -type f \( -name '*:Zone.Identifier' -o -name '*:Zone.Identifier:$DATA' \) -delete
+}
