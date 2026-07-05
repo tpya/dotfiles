@@ -41,3 +41,7 @@ clipappend() {
     cat "$file"
     echo "----- END FILE: $file -----"
 }
+
+clean_identifiers() {
+    find "${1:-.}" -type f \( -name '*:Zone.Identifier' -o -name '*:Zone.Identifier:$DATA' \) -delete
+}
